@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#08070A" />
+<title>Jorge Mello — Produtor Audiovisual · Umuarama PR</title>
+<meta name="description" content="Jorge Mello transforma negócios comuns em vídeos com cara profissional. Produção audiovisual, captação, roteiro e fotografia em Umuarama, Paraná." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   TOKENS — Editorial cinematográfico, paleta âmbar tungstênio
+   ============================================================ */
+:root {
+  --ink:        #08070A;   /* preto cinema */
+  --ink-2:      #0F0E11;
+  --ink-3:      #16151A;
+  --paper:      #F5F1EA;   /* branco quente, película */
+  --paper-dim:  #C9C4BB;
+  --mute:       #6B6873;
+  --line:       rgba(245,241,234,.08);
+  --line-2:     rgba(245,241,234,.16);
+
+  --amber:      #E8B27A;   /* âmbar tungstênio — luz de set */
+  --amber-dim:  #B8895E;
+  --rec:        #E94F37;   /* vermelho REC */
+
+  --display:    'Fraunces', 'Times New Roman', serif;
+  --body:       'Inter', system-ui, sans-serif;
+  --mono:       'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+  --maxw:       1400px;
+  --pad-x:      clamp(20px, 4vw, 56px);
+
+  --t-fast:     180ms cubic-bezier(.2,.7,.2,1);
+  --t:          420ms cubic-bezier(.2,.7,.2,1);
+  --t-slow:     900ms cubic-bezier(.2,.7,.2,1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+body {
+  min-height: 100vh;
+  font-feature-settings: 'ss01', 'cv11';
+}
+img, video { display: block; max-width: 100%; height: auto; }
+button { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--amber); color: var(--ink); }
+
+/* ============================================================
+   GRAIN OVERLAY (SVG turbulence) — atmosfera de película
+   ============================================================ */
+.grain {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .055;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================================
+   CHROME — barra superior fixa (HUD de câmera)
+   ============================================================ */
+.hud {
+  position: fixed; inset: 0 0 auto 0;
+  z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--pad-x);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.hud > * { pointer-events: auto; }
+.hud-left { display: flex; align-items: center; gap: 14px; }
+.hud-rec {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--paper);
+}
+.hud-rec::before {
+  content: '';
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--rec);
+  box-shadow: 0 0 12px var(--rec);
+  animation: rec-blink 1.4s ease-in-out infinite;
+}
+@keyframes rec-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+.hud-timecode { font-variant-numeric: tabular-nums; color: var(--amber); }
+
+/* ============================================================
+   NAV — atos de roteiro
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 40;
+  padding-top: 54px;
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink) 60%, transparent 100%);
+}
+.nav-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 18px var(--pad-x) 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  display: flex; align-items: baseline; gap: 14px;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  letter-spacing: -.01em;
+}
+.brand small {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .22em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+.nav-acts {
+  display: flex; gap: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.nav-act {
+  padding: 9px 14px;
+  color: var(--paper-dim);
+  position: relative;
+  transition: color var(--t-fast);
+}
+.nav-act:hover { color: var(--paper); }
+.nav-act .num { color: var(--amber); margin-right: 6px; }
+.nav-act.is-active { color: var(--paper); }
+.nav-act.is-active::after {
+  content: '';
+  position: absolute;
+  left: 14px; right: 14px; bottom: -1px;
+  height: 1px;
+  background: var(--amber);
+}
+.nav-burger { display: none; }
+
+/* ============================================================
+   ROUTE SHELL — SPA: cada section é uma "página"
+   ============================================================ */
+main { padding-top: 116px; }
+.route { display: none; animation: route-in var(--t-slow) both; }
+.route.is-active { display: block; }
+@keyframes route-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   SCENE MARKER — "CENA 01" antes de cada bloco
+   ============================================================ */
+.scene {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 32px;
+}
+.scene-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; height: 22px;
+  padding: 0 8px;
+  background: transparent;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-weight: 500;
+}
+.scene-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-2) 0%, transparent 100%);
+}
+
+/* ============================================================
+   HOME — HERO
+   ============================================================ */
+.section { max-width: var(--maxw); margin: 0 auto; padding: 80px var(--pad-x); }
+.section--tight { padding-top: 32px; }
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.4fr .9fr;
+  gap: 64px;
+  align-items: end;
+  min-height: calc(100vh - 116px);
+  padding-bottom: 80px;
+}
+.hero-content { position: relative; z-index: 2; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--amber);
+}
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  font-size: clamp(64px, 11vw, 168px);
+  line-height: .88;
+  letter-spacing: -.035em;
+  color: var(--paper);
+}
+.hero h1 .italic {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8;
+  color: var(--amber);
+}
+.hero-lede {
+  margin-top: 36px;
+  max-width: 460px;
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 24;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.45;
+  color: var(--paper-dim);
+}
+.hero-meta {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 36px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.hero-meta span { display: block; color: var(--paper); margin-top: 4px; letter-spacing: .04em; font-family: var(--body); font-size: 13px; text-transform: none; }
+
+.hero-reel {
+  position: relative;
+  aspect-ratio: 9/16;
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+  background: var(--ink-2);
+}
+.hero-reel video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.hero-reel-frame {
+  position: absolute; inset: 12px;
+  border: 1px solid rgba(232,178,122,.18);
+  pointer-events: none;
+}
+.hero-reel-tag {
+  position: absolute; top: 22px; left: 22px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--paper);
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-reel-tag::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rec);
+  box-shadow: 0 0 10px var(--rec);
+  animation: rec-blink 1.4s infinite;
+}
+.hero-reel-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 18px 22px;
+  background: linear-gradient(180deg, transparent 0%, rgba(8,7,10,.85) 80%);
+  display: flex; align-items: end; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+.hero-reel-info strong {
+  display: block;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -.005em;
+  color: var(--paper);
+  text-transform: none;
+  margin-bottom: 4px;
+  font-variation-settings: 'opsz' 36;
+}
+
+/* manifesto strip */
+.manifesto {
+  margin-top: 24px;
+  padding: 64px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.manifesto-text {
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  max-width: 16ch;
+  color: var(--paper);
+}
+.manifesto-text em {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8;
+  color: var(--amber);
+}
+.manifesto-foot {
+  margin-top: 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+/* featured works */
+.feat-head {
+  display: flex; align-items: end; justify-content: space-between;
+  margin-bottom: 44px;
+  gap: 32px;
+}
+.feat-head h2 {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144, 'SOFT' 60;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+.feat-head h2 em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+.feat-head p {
+  max-width: 32ch;
+  color: var(--paper-dim);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feat-card {
+  position: relative;
+  aspect-ratio: 9/16;
+  overflow: hidden;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: border-color var(--t), transform var(--t);
+}
+.feat-card:hover { border-color: var(--amber); transform: translateY(-3px); }
+.feat-card video, .feat-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--t-slow), filter var(--t);
+  filter: grayscale(.4) contrast(1.05);
+}
+.feat-card:hover video, .feat-card:hover img { transform: scale(1.03); filter: grayscale(0) contrast(1); }
+.feat-card-num {
+  position: absolute; top: 16px; left: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--amber);
+  background: rgba(8,7,10,.55);
+  padding: 5px 8px;
+  backdrop-filter: blur(4px);
+}
+.feat-card-meta {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px;
+  background: linear-gradient(180deg, transparent, rgba(8,7,10,.92) 70%);
+}
+.feat-card-meta h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 36;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin-bottom: 6px;
+}
+.feat-card-meta span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.feat-card-play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.85);
+  width: 64px; height: 64px;
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8,7,10,.5);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: all var(--t);
+}
+.feat-card:hover .feat-card-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.feat-card-play::before {
+  content: '';
+  width: 0; height: 0;
+  border-left: 12px solid var(--paper);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  margin-left: 3px;
+}
+
+.cta-strip {
+  margin-top: 96px;
+  padding: 72px var(--pad-x);
+  margin-left: calc(var(--pad-x) * -1);
+  margin-right: calc(var(--pad-x) * -1);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.cta-strip h3 {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144, 'SOFT' 60;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  max-width: 18ch;
+  margin: 0 auto 36px;
+}
+.cta-strip h3 em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 28px;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: all var(--t);
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  transform: translateX(-101%);
+  transition: transform var(--t);
+  z-index: -1;
+}
+.btn:hover { color: var(--ink); }
+.btn:hover::before { transform: translateX(0); }
+.btn-arrow {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   TRABALHOS (ATO 02) — grid editorial
+   ============================================================ */
+.works-head {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+.works-head h1 {
+  font-family: var(--display);
+  font-weight: 320;
+  font-variation-settings: 'opsz' 144, 'SOFT' 70;
+  font-size: clamp(56px, 9vw, 132px);
+  line-height: .92;
+  letter-spacing: -.035em;
+}
+.works-head h1 em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+.works-head p {
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 24;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--paper-dim);
+  max-width: 38ch;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+}
+.work-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+.work-row:nth-child(odd) { margin-top: 64px; }
+.work-thumb {
+  aspect-ratio: 9/16;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: border-color var(--t);
+}
+.work-thumb:hover { border-color: var(--amber); }
+.work-thumb video, .work-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(.3) contrast(1.05);
+  transition: filter var(--t), transform var(--t-slow);
+}
+.work-thumb:hover video, .work-thumb:hover img { filter: grayscale(0) contrast(1); transform: scale(1.02); }
+.work-thumb-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8,7,10,.0);
+  transition: background var(--t);
+}
+.work-thumb:hover .work-thumb-overlay { background: rgba(8,7,10,.25); }
+.work-thumb-icon {
+  width: 72px; height: 72px;
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8,7,10,.4);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: scale(.85);
+  transition: all var(--t);
+}
+.work-thumb:hover .work-thumb-icon { opacity: 1; transform: scale(1); }
+.work-thumb-icon::before {
+  content: '';
+  width: 0; height: 0;
+  border-left: 14px solid var(--paper);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  margin-left: 4px;
+}
+.work-info {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: baseline;
+  padding-top: 6px;
+}
+.work-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--amber);
+  letter-spacing: .15em;
+}
+.work-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 36;
+  font-size: 22px;
+  letter-spacing: -.01em;
+}
+.work-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--mute);
+  white-space: nowrap;
+}
+.work-desc {
+  margin-top: 4px;
+  grid-column: 1 / -1;
+  color: var(--paper-dim);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+/* ============================================================
+   SOBRE (ATO 03)
+   ============================================================ */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-portrait {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: var(--ink-2);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.about-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: grayscale(.5) contrast(1.05);
+}
+.about-portrait-tag {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 18px 20px;
+  background: linear-gradient(180deg, transparent, rgba(8,7,10,.88));
+  display: flex; justify-content: space-between; align-items: end;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.about-portrait-tag span { color: var(--paper-dim); }
+.about-portrait-tag strong { color: var(--amber); font-weight: 400; }
+
+.about-content h1 {
+  font-family: var(--display);
+  font-weight: 320;
+  font-variation-settings: 'opsz' 144, 'SOFT' 70;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: .9;
+  letter-spacing: -.03em;
+  margin-bottom: 32px;
+}
+.about-content h1 em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+.about-content p {
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 24;
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--paper-dim);
+  margin-bottom: 22px;
+  max-width: 56ch;
+}
+.about-content p strong { color: var(--paper); font-weight: 400; }
+.about-content p em { font-style: italic; color: var(--amber); }
+
+.about-rails {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line-2);
+  border: 1px solid var(--line-2);
+}
+.rail {
+  padding: 28px;
+  background: var(--ink);
+}
+.rail-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.rail-label::before {
+  content: '';
+  width: 16px; height: 1px;
+  background: var(--amber);
+}
+.rail ul { list-style: none; }
+.rail li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 24;
+  font-size: 17px;
+  letter-spacing: -.005em;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.rail li:last-child { border-bottom: 0; }
+.rail li small {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+/* ============================================================
+   CONTATO (ATO 04)
+   ============================================================ */
+.contact-hero h1 {
+  font-family: var(--display);
+  font-weight: 320;
+  font-variation-settings: 'opsz' 144, 'SOFT' 60;
+  font-size: clamp(56px, 10vw, 156px);
+  line-height: .9;
+  letter-spacing: -.035em;
+  margin-bottom: 40px;
+}
+.contact-hero h1 em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+.contact-hero p {
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 24;
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--paper-dim);
+  max-width: 48ch;
+  margin-bottom: 80px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 96px;
+}
+.contact-card {
+  display: block;
+  padding: 36px 32px 32px;
+  border: 1px solid var(--line-2);
+  background: var(--ink-2);
+  position: relative;
+  transition: all var(--t);
+  overflow: hidden;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(232,178,122,.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--t);
+}
+.contact-card:hover {
+  border-color: var(--amber);
+  transform: translateY(-3px);
+}
+.contact-card:hover::before { opacity: 1; }
+.contact-card-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 10px;
+}
+.contact-card-icon {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+}
+.contact-card h3 {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144, 'SOFT' 70;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  margin-bottom: 12px;
+  color: var(--paper);
+  position: relative;
+  z-index: 1;
+}
+.contact-card p {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  position: relative; z-index: 1;
+}
+.contact-card-arrow {
+  position: absolute;
+  top: 32px; right: 28px;
+  width: 16px; height: 16px;
+  color: var(--mute);
+  transition: all var(--t);
+}
+.contact-card:hover .contact-card-arrow {
+  color: var(--amber);
+  transform: translate(3px, -3px);
+}
+
+.contact-footer {
+  padding: 48px 0 32px;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: end;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+.contact-footer-lede {
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  max-width: 18ch;
+}
+.contact-footer-lede em { font-style: italic; color: var(--amber); font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot {
+  margin-top: 96px;
+  padding: 40px var(--pad-x) 36px;
+  border-top: 1px solid var(--line);
+}
+.foot-inner {
+  max-width: var(--maxw); margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.foot-inner a:hover { color: var(--amber); }
+
+/* ============================================================
+   VIDEO MODAL
+   ============================================================ */
+.modal {
+  position: fixed; inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center; justify-content: center;
+  background: rgba(8,7,10,.96);
+  backdrop-filter: blur(12px);
+  padding: 5vh 24px;
+}
+.modal.is-open { display: flex; animation: modal-in var(--t) both; }
+@keyframes modal-in { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-stage {
+  position: relative;
+  height: 90vh;
+  aspect-ratio: 9/16;
+  max-width: 95vw;
+  border: 1px solid var(--line-2);
+}
+.modal-stage video {
+  width: 100%; height: 100%; object-fit: contain;
+  background: #000;
+}
+.modal-close {
+  position: absolute;
+  top: -52px; right: 0;
+  width: 36px; height: 36px;
+  border: 1px solid var(--paper-dim);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--t-fast);
+}
+.modal-close:hover { border-color: var(--amber); color: var(--amber); }
+.modal-info {
+  position: absolute;
+  bottom: -42px; left: 0; right: 0;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+.modal-info strong {
+  color: var(--paper);
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 24;
+  font-size: 14px;
+  letter-spacing: -.005em;
+  text-transform: none;
+}
+
+/* ============================================================
+   LOADER (claquete) — só carrega 1x
+   ============================================================ */
+.loader {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink);
+  flex-direction: column; gap: 24px;
+  animation: loader-out 600ms ease 1.8s forwards;
+}
+.loader-mark {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1;
+  letter-spacing: -.03em;
+  overflow: hidden;
+}
+.loader-mark span {
+  display: inline-block;
+  animation: loader-letter 800ms cubic-bezier(.2,.7,.2,1) both;
+}
+.loader-mark .italic {
+  font-style: italic;
+  color: var(--amber);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'slnt' -8;
+}
+.loader-mark span:nth-child(1)  { animation-delay: 0ms; }
+.loader-mark span:nth-child(2)  { animation-delay: 50ms; }
+.loader-mark span:nth-child(3)  { animation-delay: 100ms; }
+.loader-mark span:nth-child(4)  { animation-delay: 150ms; }
+.loader-mark span:nth-child(5)  { animation-delay: 200ms; }
+.loader-mark span:nth-child(6)  { animation-delay: 280ms; }
+.loader-mark span:nth-child(7)  { animation-delay: 330ms; }
+.loader-mark span:nth-child(8)  { animation-delay: 380ms; }
+.loader-mark span:nth-child(9)  { animation-delay: 430ms; }
+.loader-mark span:nth-child(10) { animation-delay: 480ms; }
+@keyframes loader-letter {
+  from { transform: translateY(120%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.loader-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--mute);
+  opacity: 0;
+  animation: loader-tag 600ms ease 700ms forwards;
+}
+.loader-tag .rec {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--rec);
+  margin-right: 10px;
+  animation: rec-blink 1.4s infinite;
+  vertical-align: middle;
+}
+@keyframes loader-tag { to { opacity: 1; } }
+@keyframes loader-out { to { opacity: 0; visibility: hidden; } }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; gap: 48px; padding-bottom: 48px; }
+  .hero-reel { max-width: 360px; }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .feat-grid > :nth-child(3) { grid-column: 1 / -1; max-width: 50%; margin: 0 auto; }
+  .about { grid-template-columns: 1fr; gap: 48px; }
+  .about-portrait { max-width: 480px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .works-head { grid-template-columns: 1fr; gap: 24px; }
+}
+
+@media (max-width: 720px) {
+  :root { --pad-x: 20px; }
+  .hud { font-size: 9px; padding: 14px var(--pad-x); }
+  .nav { padding-top: 44px; }
+  .nav-inner { padding: 14px var(--pad-x) 16px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .nav-acts { width: 100%; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .nav-acts::-webkit-scrollbar { display: none; }
+  .nav-act { flex-shrink: 0; padding: 6px 10px; font-size: 10px; }
+  main { padding-top: 144px; }
+  .section { padding: 48px var(--pad-x); }
+  .feat-grid { grid-template-columns: 1fr; }
+  .feat-grid > :nth-child(3) { max-width: 100%; }
+  .works-grid { grid-template-columns: 1fr; }
+  .work-row:nth-child(odd) { margin-top: 0; }
+  .about-rails { grid-template-columns: 1fr; }
+  .hero h1 { font-size: clamp(56px, 18vw, 96px); }
+  .hero-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .modal-stage { height: auto; width: 100%; aspect-ratio: 9/16; }
+  .modal-info { position: static; margin-top: 16px; flex-direction: column; gap: 6px; }
+  .modal-close { top: -44px; right: 0; }
+  .cta-strip { padding: 48px var(--pad-x); margin-top: 64px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .hero-reel video { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- GRAIN OVERLAY — turbulence SVG -->
+<svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="2.8" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 0"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#grain)"/>
+</svg>
+
+<!-- LOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-mark">
+    <span>J</span><span>O</span><span>R</span><span>G</span><span>E</span>
+    <span class="italic">M</span><span class="italic">E</span><span class="italic">L</span><span class="italic">L</span><span class="italic">O</span>
+  </div>
+  <div class="loader-tag"><span class="rec"></span>REC · CENA 01 · TAKE 01</div>
+</div>
+
+<!-- HUD CHROME -->
+<div class="hud" aria-hidden="true">
+  <div class="hud-left">
+    <span class="hud-rec">REC</span>
+    <span>CAM A · 24FPS · COLOR</span>
+  </div>
+  <div class="hud-timecode" id="timecode">00:00:00:00</div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Principal">
+  <div class="nav-inner">
+    <a href="#home" class="brand" data-route="home">
+      Jorge&nbsp;<em style="font-style:italic;color:var(--amber);font-family:var(--display);font-variation-settings:'opsz' 144, 'SOFT' 100, 'slnt' -8;">Mello</em>
+      <small>Produtor Audiovisual</small>
+    </a>
+    <div class="nav-acts" role="tablist">
+      <a href="#home" class="nav-act is-active" data-route="home" role="tab"><span class="num">01</span>Índice</a>
+      <a href="#trabalhos" class="nav-act" data-route="trabalhos" role="tab"><span class="num">02</span>Obra</a>
+      <a href="#sobre" class="nav-act" data-route="sobre" role="tab"><span class="num">03</span>Diretor</a>
+      <a href="#contato" class="nav-act" data-route="contato" role="tab"><span class="num">04</span>Contato</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================
+     ROUTE: HOME
+     ============================================================ -->
+<section class="route is-active" data-route="home" id="home">
+
+  <div class="section">
+
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Umuarama · Paraná · Brasil</div>
+        <h1>
+          Produtor <span class="italic">audiovisual</span><br>
+          de empresas que<br>
+          querem ser <span class="italic">vistas.</span>
+        </h1>
+        <p class="hero-lede">
+          Captação, roteiro, fotografia e iluminação para marcas locais e produções independentes de cinema. Cada peça construída para parar a rolagem.
+        </p>
+        <div class="hero-meta">
+          <div>Atuação<span>Empresas locais &amp; cinema</span></div>
+          <div>Disciplinas<span>Roteiro · Captação · Fotografia</span></div>
+          <div>Equipamento<span>Câmera · Celular · Iluminação</span></div>
+        </div>
+      </div>
+
+      <aside class="hero-reel" aria-label="Reel em destaque">
+        <video autoplay loop muted playsinline preload="metadata" poster="assets/poster-hero.jpg">
+          <source src="assets/work-04.mp4" type="video/mp4">
+        </video>
+        <div class="hero-reel-frame"></div>
+        <div class="hero-reel-tag">REEL · 2025</div>
+        <div class="hero-reel-info">
+          <div>
+            <strong>Reel 2025</strong>
+            <span>Compilado · Welow</span>
+          </div>
+          <span>9:16 · COLOR</span>
+        </div>
+      </aside>
+    </div>
+
+    <!-- MANIFESTO -->
+    <div class="manifesto">
+      <div class="scene">
+        <span class="scene-num">01</span>
+        <span>Manifesto</span>
+        <span class="scene-line"></span>
+        <span>00:00:14:27</span>
+      </div>
+      <p class="manifesto-text">
+        Jorge transforma <em>negócios comuns</em> em vídeos com cara profissional.
+      </p>
+      <div class="manifesto-foot">— Filosofia de produção</div>
+    </div>
+
+    <!-- FEATURED WORKS -->
+    <div style="margin-top:96px;">
+      <div class="scene">
+        <span class="scene-num">02</span>
+        <span>Trabalhos em destaque</span>
+        <span class="scene-line"></span>
+        <span>03 cenas</span>
+      </div>
+      <div class="feat-head">
+        <h2>Obras <em>selecionadas</em></h2>
+        <p>Uma amostra do que Jorge entrega quando o cliente pede "algo profissional, mas que pareça real".</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat-card" data-video="work-01" data-title="Movimento Urbano" data-meta="Welow · 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-01.jpg">
+            <source src="assets/work-01.mp4" type="video/mp4">
+          </video>
+          <div class="feat-card-num">№ 01</div>
+          <div class="feat-card-play"></div>
+          <div class="feat-card-meta">
+            <h3>Movimento Urbano</h3>
+            <span>Welow · 9:16 · 2025</span>
+          </div>
+        </article>
+
+        <article class="feat-card" data-video="work-02" data-title="Atmosfera" data-meta="Welow · 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-02.jpg">
+            <source src="assets/work-02.mp4" type="video/mp4">
+          </video>
+          <div class="feat-card-num">№ 02</div>
+          <div class="feat-card-play"></div>
+          <div class="feat-card-meta">
+            <h3>Atmosfera</h3>
+            <span>Welow · 9:16 · 2025</span>
+          </div>
+        </article>
+
+        <article class="feat-card" data-video="work-04" data-title="Vinheta" data-meta="Welow · 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-04.jpg">
+            <source src="assets/work-04.mp4" type="video/mp4">
+          </video>
+          <div class="feat-card-num">№ 04</div>
+          <div class="feat-card-play"></div>
+          <div class="feat-card-meta">
+            <h3>Vinheta</h3>
+            <span>Welow · 9:16 · 2025</span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-strip">
+      <div class="scene" style="justify-content:center;">
+        <span class="scene-num">03</span>
+        <span>Próxima cena</span>
+      </div>
+      <h3>Tem um projeto que precisa <em>existir</em> em vídeo?</h3>
+      <a href="#contato" class="btn" data-route-link="contato">
+        Iniciar conversa
+        <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M1 13L13 1M13 1H4M13 1V10"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     ROUTE: TRABALHOS
+     ============================================================ -->
+<section class="route" data-route="trabalhos" id="trabalhos">
+  <div class="section">
+
+    <div class="scene">
+      <span class="scene-num">02</span>
+      <span>Obra completa</span>
+      <span class="scene-line"></span>
+      <span>05 cenas</span>
+    </div>
+
+    <div class="works-head">
+      <h1>Toda a <em>obra.</em></h1>
+      <p>Cada peça abaixo foi produzida do conceito à entrega. Roteiro, captação, direção de fotografia e finalização — Jorge no controle de cada etapa.</p>
+    </div>
+
+    <div class="works-grid">
+
+      <article class="work-row">
+        <div class="work-thumb" data-video="work-01" data-title="Movimento Urbano" data-meta="Welow · Captação 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-01.jpg">
+            <source src="assets/work-01.mp4" type="video/mp4">
+          </video>
+          <div class="work-thumb-overlay">
+            <div class="work-thumb-icon"></div>
+          </div>
+        </div>
+        <div class="work-info">
+          <span class="work-num">№ 01</span>
+          <h3 class="work-title">Movimento Urbano</h3>
+          <span class="work-meta">Welow · 2025</span>
+          <p class="work-desc">Captação documental em ambiente urbano, foco em textura e ritmo. Edição corta no respiro entre planos.</p>
+        </div>
+      </article>
+
+      <article class="work-row">
+        <div class="work-thumb" data-video="work-02" data-title="Atmosfera" data-meta="Welow · Captação 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-02.jpg">
+            <source src="assets/work-02.mp4" type="video/mp4">
+          </video>
+          <div class="work-thumb-overlay">
+            <div class="work-thumb-icon"></div>
+          </div>
+        </div>
+        <div class="work-info">
+          <span class="work-num">№ 02</span>
+          <h3 class="work-title">Atmosfera</h3>
+          <span class="work-meta">Welow · 2025</span>
+          <p class="work-desc">Estudo de luz natural e estado emocional. A câmera observa, não interroga.</p>
+        </div>
+      </article>
+
+      <article class="work-row">
+        <div class="work-thumb" data-video="work-03" data-title="Ritmo" data-meta="Welow · Captação 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-03.jpg">
+            <source src="assets/work-03.mp4" type="video/mp4">
+          </video>
+          <div class="work-thumb-overlay">
+            <div class="work-thumb-icon"></div>
+          </div>
+        </div>
+        <div class="work-info">
+          <span class="work-num">№ 03</span>
+          <h3 class="work-title">Ritmo</h3>
+          <span class="work-meta">Welow · 2025</span>
+          <p class="work-desc">Cobertura complementar pensada para corte rápido. Cada frame tem que justificar a próxima escolha.</p>
+        </div>
+      </article>
+
+      <article class="work-row">
+        <div class="work-thumb" data-video="work-04" data-title="Vinheta" data-meta="Welow · Captação 9:16">
+          <video muted loop playsinline preload="metadata" poster="assets/poster-04.jpg">
+            <source src="assets/work-04.mp4" type="video/mp4">
+          </video>
+          <div class="work-thumb-overlay">
+            <div class="work-thumb-icon"></div>
+          </div>
+        </div>
+        <div class="work-info">
+          <span class="work-num">№ 04</span>
+          <h3 class="work-title">Vinheta</h3>
+          <span class="work-meta">Welow · 2025</span>
+          <p class="work-desc">Peça curta, alta densidade visual. Direção de arte resolvida ainda na pré-produção.</p>
+        </div>
+      </article>
+
+      <article class="work-row" style="grid-column:1/-1;">
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:32px;align-items:start;">
+          <div class="work-thumb" data-video="work-05" data-title="Reel 2025" data-meta="Welow · Compilado">
+            <video muted loop playsinline preload="metadata" poster="assets/poster-05.jpg">
+              <source src="assets/work-05.mp4" type="video/mp4">
+            </video>
+            <div class="work-thumb-overlay">
+              <div class="work-thumb-icon"></div>
+            </div>
+          </div>
+          <div style="padding-top:32px;">
+            <div class="work-info" style="grid-template-columns:auto 1fr auto;">
+              <span class="work-num">№ 05</span>
+              <h3 class="work-title">Reel — 2025</h3>
+              <span class="work-meta">Compilado · Welow</span>
+            </div>
+            <p class="work-desc" style="margin-top:16px;font-family:var(--display);font-weight:300;font-variation-settings:'opsz' 24;font-size:18px;line-height:1.55;max-width:48ch;">
+              Compilado vertical com os melhores momentos da temporada. Editado para tela cheia de celular — onde o vídeo é, de fato, consumido.
+            </p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="cta-strip">
+      <h3>Sua marca merece um <em>frame</em> melhor.</h3>
+      <a href="#contato" class="btn" data-route-link="contato">
+        Contratar Jorge
+        <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M1 13L13 1M13 1H4M13 1V10"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     ROUTE: SOBRE
+     ============================================================ -->
+<section class="route" data-route="sobre" id="sobre">
+  <div class="section">
+
+    <div class="scene">
+      <span class="scene-num">03</span>
+      <span>O Diretor</span>
+      <span class="scene-line"></span>
+      <span>Bio · 2025</span>
+    </div>
+
+    <div class="about">
+      <div class="about-portrait">
+        <img src="assets/jorge.png" alt="Jorge Mello, retrato em locação urbana" loading="lazy">
+        <div class="about-portrait-tag">
+          <span>Retrato · Locação SP</span>
+          <strong>JORGE / 2024</strong>
+        </div>
+      </div>
+
+      <div class="about-content">
+        <h1>Conta histórias <em>com câmera</em> na mão.</h1>
+        <p>
+          Jorge Mello é produtor audiovisual baseado em <strong>Umuarama, Paraná</strong>. Trabalha entre o universo das empresas locais e o cinema independente, sem pedir licença pra nenhum dos dois.
+        </p>
+        <p>
+          Da pré-produção à finalização, cuida pessoalmente de <strong>roteiro, captação, direção de fotografia e iluminação</strong>. A ideia é simples: cada negócio, por menor que seja, merece um vídeo que <em>pareça filme</em> — não um anúncio.
+        </p>
+        <p>
+          O método? Observar antes de filmar. Entender o que a marca <em>realmente é</em> antes de tentar mostrar isso na tela. O resto é luz, lente e timing.
+        </p>
+
+        <div class="about-rails">
+          <div class="rail">
+            <div class="rail-label">Disciplinas</div>
+            <ul>
+              <li>Roteiro<small>desenvolvimento</small></li>
+              <li>Captação<small>direção de fotografia</small></li>
+              <li>Vídeos<small>institucional · social</small></li>
+              <li>Fotografia<small>still · cobertura</small></li>
+            </ul>
+          </div>
+          <div class="rail">
+            <div class="rail-label">Equipamento</div>
+            <ul>
+              <li>Câmera<small>captação principal</small></li>
+              <li>Celular<small>guerrilha · social</small></li>
+              <li>Iluminação<small>kit completo</small></li>
+              <li>Edição<small>finalização in-house</small></li>
+            </ul>
+          </div>
+          <div class="rail">
+            <div class="rail-label">Atuação</div>
+            <ul>
+              <li>Empresas locais<small>Umuarama · região</small></li>
+              <li>Cinema<small>independente</small></li>
+              <li>Marcas<small>conteúdo de social</small></li>
+              <li>Eventos<small>cobertura editorial</small></li>
+            </ul>
+          </div>
+          <div class="rail">
+            <div class="rail-label">Base</div>
+            <ul>
+              <li>Cidade<small>Umuarama / PR</small></li>
+              <li>Atende<small>todo o Brasil</small></li>
+              <li>Idiomas<small>português</small></li>
+              <li>Disponível<small>2026 ✓</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     ROUTE: CONTATO
+     ============================================================ -->
+<section class="route" data-route="contato" id="contato">
+  <div class="section">
+
+    <div class="scene">
+      <span class="scene-num">04</span>
+      <span>Contato direto</span>
+      <span class="scene-line"></span>
+      <span>Resposta em 24h</span>
+    </div>
+
+    <div class="contact-hero">
+      <h1>Vamos <em>filmar.</em></h1>
+      <p>Sem formulário, sem intermediário, sem "atendente comercial". Você fala direto com o Jorge — escolha o canal mais confortável.</p>
+    </div>
+
+    <div class="contact-grid">
+
+      <a href="https://wa.me/5544997709182?text=Ol%C3%A1%20Jorge%2C%20vim%20do%20seu%20site." class="contact-card" target="_blank" rel="noopener">
+        <div class="contact-card-label">
+          <span class="contact-card-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.6 6.32A8.78 8.78 0 0 0 11.5 4a8.74 8.74 0 0 0-7.42 13.21l-1.05 3.83 3.93-1.03A8.74 8.74 0 0 0 20.24 12 8.68 8.68 0 0 0 17.6 6.32zM11.5 18.74a7.27 7.27 0 0 1-3.7-1.01l-.27-.16-2.74.72.73-2.67-.18-.28a7.26 7.26 0 1 1 6.16 3.4zm4.18-5.43c-.23-.11-1.36-.67-1.57-.75s-.36-.11-.51.11-.59.75-.72.9-.27.17-.5.06a5.95 5.95 0 0 1-1.75-1.08 6.55 6.55 0 0 1-1.21-1.51c-.13-.22 0-.34.1-.45a6.06 6.06 0 0 0 .5-.58.21.21 0 0 0 0-.21c0-.11-.51-1.24-.7-1.7s-.37-.39-.51-.39h-.43a.84.84 0 0 0-.61.28 2.55 2.55 0 0 0-.79 1.9 4.4 4.4 0 0 0 .94 2.36 10.18 10.18 0 0 0 3.92 3.46 13.36 13.36 0 0 0 1.31.48 3.13 3.13 0 0 0 1.44.09 2.36 2.36 0 0 0 1.54-1.09 1.92 1.92 0 0 0 .14-1.09c-.05-.11-.2-.17-.43-.28z"/>
+            </svg>
+          </span>
+          WhatsApp · Direto
+        </div>
+        <h3>+55 (44) 99770-9182</h3>
+        <p>Resposta em horário comercial</p>
+        <svg class="contact-card-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M1 13L13 1M13 1H4M13 1V10"/>
+        </svg>
+      </a>
+
+      <a href="https://instagram.com/jorgejuni_" class="contact-card" target="_blank" rel="noopener">
+        <div class="contact-card-label">
+          <span class="contact-card-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>
+          </span>
+          Instagram · Portfólio
+        </div>
+        <h3>@jorgejuni_</h3>
+        <p>Bastidores · processos · cortes inéditos</p>
+        <svg class="contact-card-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M1 13L13 1M13 1H4M13 1V10"/>
+        </svg>
+      </a>
+
+      <a href="#sobre" class="contact-card" data-route-link="sobre">
+        <div class="contact-card-label">
+          <span class="contact-card-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 2v20M2 12h20" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="9"/>
+            </svg>
+          </span>
+          Base de Operação
+        </div>
+        <h3>Umuarama, PR</h3>
+        <p>Disponível para deslocamento — todo o Brasil</p>
+        <svg class="contact-card-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M1 13L13 1M13 1H4M13 1V10"/>
+        </svg>
+      </a>
+
+    </div>
+
+    <div class="contact-footer">
+      <div class="contact-footer-lede">
+        Pré-produção começa com uma <em>boa conversa.</em>
+      </div>
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);">
+        <div style="margin-bottom:6px;color:var(--paper);">Horário comercial</div>
+        Seg–Sex · 09h–19h (BRT)
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-inner">
+    <div>© 2026 · Jorge Mello · Produtor Audiovisual</div>
+    <div>Umuarama / PR · Brasil</div>
+    <div>
+      <a href="https://wa.me/5544997709182">WhatsApp</a>
+      &nbsp;·&nbsp;
+      <a href="https://instagram.com/jorgejuni_">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL DE VÍDEO -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
+  <div class="modal-stage">
+    <button class="modal-close" id="modal-close" aria-label="Fechar">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M1 1L13 13M13 1L1 13"/>
+      </svg>
+    </button>
+    <video id="modal-video" controls playsinline preload="metadata"></video>
+    <div class="modal-info">
+      <strong id="modal-title">—</strong>
+      <span id="modal-meta">—</span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SPA ROUTER (sem history API — só toggle de section)
+   ============================================================ */
+(() => {
+  const routes  = document.querySelectorAll('[data-route]');
+  const links   = document.querySelectorAll('[data-route]');
+  const tabs    = document.querySelectorAll('.nav-act');
+
+  function goTo(routeName) {
+    let found = false;
+    routes.forEach(el => {
+      if (el.tagName === 'SECTION') {
+        const is = el.dataset.route === routeName;
+        el.classList.toggle('is-active', is);
+        if (is) found = true;
+      }
+    });
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.route === routeName));
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    if (history && history.replaceState) {
+      history.replaceState(null, '', '#' + routeName);
+    }
+    return found;
+  }
+
+  // intercepta clicks em links com data-route ou data-route-link
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-route], a[data-route-link]');
+    if (!a) return;
+    const target = a.dataset.route || a.dataset.routeLink;
+    if (!target) return;
+    e.preventDefault();
+    goTo(target);
+  });
+
+  // suporta deeplink via hash
+  const initial = (location.hash || '#home').slice(1);
+  if (initial && initial !== 'home') {
+    setTimeout(() => goTo(initial), 0);
+  }
+
+  window.__goTo = goTo;
+})();
+
+/* ============================================================
+   TIMECODE — HUD canto superior
+   ============================================================ */
+(() => {
+  const tc = document.getElementById('timecode');
+  if (!tc) return;
+  const start = Date.now();
+  function pad(n, l=2) { return String(n).padStart(l, '0'); }
+  function tick() {
+    const ms = Date.now() - start;
+    const f = Math.floor((ms % 1000) / (1000/24)); // 24fps frame
+    const s = Math.floor(ms/1000) % 60;
+    const m = Math.floor(ms/60000) % 60;
+    const h = Math.floor(ms/3600000);
+    tc.textContent = `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`;
+  }
+  setInterval(tick, 1000/24);
+  tick();
+})();
+
+/* ============================================================
+   HOVER PLAY — vídeos dos cards rodam ao passar o mouse
+   ============================================================ */
+(() => {
+  document.querySelectorAll('.feat-card video, .work-thumb video').forEach(v => {
+    const card = v.closest('.feat-card, .work-thumb');
+    if (!card) return;
+    let isPlaying = false;
+    card.addEventListener('mouseenter', () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const p = v.play();
+      if (p !== undefined) p.then(() => { isPlaying = true; }).catch(() => {});
+    });
+    card.addEventListener('mouseleave', () => {
+      try { v.pause(); v.currentTime = 0; } catch (e) {}
+    });
+  });
+})();
+
+/* ============================================================
+   MODAL DE VÍDEO
+   ============================================================ */
+(() => {
+  const modal      = document.getElementById('modal');
+  const modalVid   = document.getElementById('modal-video');
+  const modalTitle = document.getElementById('modal-title');
+  const modalMeta  = document.getElementById('modal-meta');
+  const closeBtn   = document.getElementById('modal-close');
+
+  function open(videoSlug, title, meta) {
+    modalVid.src = 'assets/' + videoSlug + '.mp4';
+    modalVid.poster = 'assets/poster-' + videoSlug.replace('work-', '') + '.jpg';
+    modalTitle.textContent = title || '';
+    modalMeta.textContent = meta || '';
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      const p = modalVid.play();
+      if (p !== undefined) p.catch(() => {});
+    }, 80);
+  }
+  function close() {
+    modal.classList.remove('is-open');
+    try { modalVid.pause(); modalVid.removeAttribute('src'); modalVid.load(); } catch (e) {}
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-video]').forEach(el => {
+    el.addEventListener('click', () => {
+      open(el.dataset.video, el.dataset.title, el.dataset.meta);
+    });
+  });
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+/* ============================================================
+   LOADER — só na primeira visita
+   ============================================================ */
+(() => {
+  const loader = document.getElementById('loader');
+  if (!loader) return;
+  setTimeout(() => { loader.remove(); }, 2500);
+})();
+</script>
+
+</body>
+</html>
